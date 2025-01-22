@@ -1,131 +1,36 @@
-name: commit ci
-on: [push, pull_request]
+name: Commit CI
+
+on:
+  push:
+    branches:
+      - '!master'
+    tags:
+      - '![0-9]+.*'
+  pull_request:
+
 jobs:
+  lint:
+    runs-on: macos-14
+    steps:
+      - name: Checkout last commit
+        uses: actions/checkout@v4
+      - name: Install latest lang-format
+        run: brew update && brew install clang-format
+      - name: Code style lint
+        run: make clang-format-lint
+
   linux:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler: [g++, clang]
-    steps:
-      - name: Checkout last commit
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          submodules: "recursive"
+    needs: lint
+    uses: ./.github/workflows/linux-build.yml
 
-      - name: Install dependency
-        run: ./action-install-linux.sh
-
-      - name: Unit test
-        run: make test
   macos:
-    runs-on: macos-latest
-    env:
-      boost_version: 1.75.0
-      BOOST_ROOT: ${{ github.workspace }}/thirdparty/src/boost_1_75_0
-    steps:
-      - name: Checkout last commit
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          submodules: "recursive"
+    needs: lint
+    uses: ./.github/workflows/macos-build.yml
 
-      - name: Cache Boost
-        id: cache-boost
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ env.BOOST_ROOT }}.tar.bz2
-            ${{ env.BOOST_ROOT }}/stage
-          key: ${{ runner.os }}-boost-${{ env.boost_version }}
-
-      - name: Extract Boost source tarball
-        if: steps.cache-boost.outputs.cache-hit == 'true'
-        run: |
-          pushd thirdparty/src
-          tar --bzip2 -xf ${{ env.BOOST_ROOT }}.tar.bz2
-          popd
-
-      - name: Install Boost
-        if: steps.cache-boost.outputs.cache-hit != 'true'
-        run: ./install-boost.sh
-
-      - name: Check submodules
-        run: git submodule > submodule-status
-
-      - name: Cache thirdparty
-        id: cache-thirdparty
-        uses: actions/cache@v2
-        with:
-          path: |
-            thirdparty/bin
-            thirdparty/include
-            thirdparty/lib
-            thirdparty/share
-          key: ${{ runner.os }}-thirdparty-${{ hashFiles('submodule-status') }}
-
-      - name: Build thirdparty
-        if: steps.cache-thirdparty.outputs.cache-hit != 'true'
-        run: make xcode/thirdparty
-
-      - name: Install Rime plugins
-        run: ./action-install-plugins-macos.sh
-
-      - name: Unit test
-        run: make xcode/test
   windows:
-    runs-on: windows-latest
-    env:
-      boost_version: 1.76.0
-      BOOST_ROOT: ${{ github.workspace }}\thirdparty\src\boost_1_76_0
-    steps:
-      - name: Checkout last commit
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          submodules: "recursive"
+    needs: lint
+    uses: ./.github/workflows/windows-build.yml
 
-      - name: Cache Boost
-        id: cache-boost
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ env.BOOST_ROOT }}.7z
-            ${{ env.BOOST_ROOT }}\stage
-          key: ${{ runner.os }}-boost-${{ env.boost_version }}
-
-      - name: Extract Boost source tarball
-        if: steps.cache-boost.outputs.cache-hit == 'true'
-        run: |
-          pushd thirdparty\src
-          7z x ${{ env.BOOST_ROOT }}.7z
-          popd
-
-      - name: Install Boost
-        if: steps.cache-boost.outputs.cache-hit != 'true'
-        run: .\install-boost.bat
-
-      - name: Check submodules
-        run: git submodule > submodule-status
-
-      - name: Cache thirdparty
-        id: cache-thirdparty
-        uses: actions/cache@v2
-        with:
-          path: |
-            thirdparty\bin
-            thirdparty\include
-            thirdparty\lib
-            thirdparty\share
-          key: ${{ runner.os }}-thirdparty-${{ hashFiles('submodule-status') }}
-
-      - name: Build thirdparty
-        if: steps.cache-thirdparty.outputs.cache-hit != 'true'
-        run: .\build.bat thirdparty
-
-      - name: Install Rime plugins
-        run: .\action-install-plugins-windows.bat
-
-      - name: Unit test
-        run: .\build.bat test
+  docker:
+    needs: lint
+    uses: ./.github/workflows/docker-build.yml

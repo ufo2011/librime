@@ -1,21 +1,18 @@
 #!/bin/bash
 
 dep_packages=(
-    capnproto
-    doxygen
-    libboost-filesystem-dev
     libboost-locale-dev
     libboost-regex-dev
-    libboost-system-dev
-    libcapnp-dev
     libgoogle-glog-dev
     libleveldb-dev
     libmarisa-dev
     libyaml-cpp-dev
+    libopencc-dev
+    libgtest-dev
 )
 
-sudo apt-get update
-sudo apt-get install ${dep_packages[@]} -y
-make thirdparty/gtest
-make -C thirdparty/src/opencc build
-sudo env "PATH=$PATH" make -C thirdparty/src/opencc install
+sudo apt update
+# fix a package dependency bug in Ubuntu 22.04
+# https://bugs.launchpad.net/ubuntu/+source/google-glog/+bug/1991919
+# https://github.com/kadalu-tech/pkgs/pull/2/files#r1001042597
+sudo apt install -y libunwind-dev ninja-build ${dep_packages[@]}

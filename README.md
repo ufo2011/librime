@@ -2,8 +2,7 @@
 
 RIME: Rime Input Method Engine
 ===
-[![Build Status](https://travis-ci.org/rime/librime.svg)](https://travis-ci.org/rime/librime)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/rime/librime?svg=true)](https://ci.appveyor.com/project/rime/librime)
+![Build status](https://github.com/rime/librime/actions/workflows/commit-ci.yml/badge.svg)
 [![GitHub release](https://img.shields.io/github/release/rime/librime.svg)](https://github.com/rime/librime/releases)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
@@ -39,12 +38,10 @@ Follow the instructions to build librime on platforms other than Linux:
 
 Build dependencies
 ---
-  - compiler with C++14 support
-  - capnproto>=0.7.0
-  - cmake>=2.8
-  - libboost>=1.48
-  - libcapnp>=0.7.0
-  - libglog (optional)
+  - compiler with C++17 support
+  - cmake>=3.12
+  - libboost>=1.74
+  - libglog>=0.7 (optional)
   - libleveldb
   - libmarisa
   - libopencc>=1.0.2
@@ -54,7 +51,6 @@ Build dependencies
 Runtime dependencies
 ---
   - libboost
-  - libcapnp
   - libglog (optional)
   - libleveldb
   - libmarisa
@@ -76,29 +72,42 @@ Official:
   - [Squirrel](https://github.com/rime/squirrel): frontend for macOS
   - [Weasel](https://github.com/rime/weasel): frontend for Windows
 
-Third-party:
+Community:
   - [emacs-rime](https://github.com/DogLooksGood/emacs-rime): frontend for Emacs
+  - [coc-rime](https://github.com/tonyfettes/coc-rime): frontend for Vim
+  - [rime.nvim](https://github.com/Freed-Wu/rime.nvim): frontend for Vim
+  - [fcitx5.nvim](https://github.com/tonyfettes/fcitx5.nvim): Fcitx5 frontend for Vim
+  - [fcitx5-ui.nvim](https://github.com/black-desk/fcitx5-ui.nvim): Fcitx5 frontend for Vim
+  - [zsh-rime](https://github.com/Freed-Wu/zsh-rime): frontend for Zsh
+  - [pyrime](https://github.com/Freed-Wu/pyrime): frontend for Ptpython
   - [fcitx-rime](https://github.com/fcitx/fcitx-rime): Fcitx frontend for Linux
   - [fcitx5-rime](https://github.com/fcitx/fcitx5-rime): Fcitx5 frontend for Linux
-  - [iRime](https://github.com/jimmy54/iRime): frontend for iOS
-  - [PIME](https://github.com/EasyIME/PIME): frontend for Windows
-  - [Trime](https://github.com/osfans/trime): frontend for Android
+  - [fcitx5-macos](https://github.com/fcitx-contrib/fcitx5-macos): Fcitx5 frontend for macOS
   - [XIME](https://github.com/stackia/XIME): frontend for macOS
+  - [PIME](https://github.com/EasyIME/PIME): frontend for Windows
+  - [rabbit](https://github.com/amorphobia/rabbit): frontend for Windows
+  - [Trime](https://github.com/osfans/trime): frontend for Android
+  - [fcitx5-android](https://github.com/fcitx5-android/fcitx5-android): frontend for Android
+  - [Hamster](https://github.com/imfuxiao/Hamster): frontend for iOS
+  - [My RIME](https://github.com/LibreService/my_rime): frontend for web
 
 Plugins
 ===
-  - [librime-charcode](https://github.com/rime/librime-charcode) Module that
+  - [librime-charcode](https://github.com/rime/librime-charcode) (Deprecated) Module that
     deals with character encoding; depends on boost::locale and ICU libraries
-  - [librime-legacy](https://github.com/rime/librime-legacy) Legacy module with
+  - [librime-legacy](https://github.com/rime/librime-legacy) (Deprecated) Legacy module with
     GPL-licensed code
+  - [librime-lua](https://github.com/hchunhui/librime-lua) Lua scripting
+  - [librime-octagram](https://github.com/lotem/librime-octagram) Language model
+  - [librime-predict](https://github.com/rime/librime-predict) Predict next word
+  - [librime-proto](https://github.com/lotem/librime-proto) IPC using CapnProto
 
 Related works
 ===
-  - [plum](https://github.com/rime/plum): Rime configuration manager and input
-    schema repository
-  - [Combo Pinyin](https://github.com/rime/home/wiki/ComboPinyin): an innovative
+  - [plum](https://github.com/rime/plum): Rime configuration (recipe) installer
+  - [combo-pinyin](https://github.com/rime/home/wiki/ComboPinyin): an innovative
     chord-typing practice to input Pinyin
-  - [rime-essay](https://github.com/rime/rime-essay): the vocabulary and language model for Rime
+  - [rime-essay](https://github.com/rime/rime-essay): the preset vocabulary
   - [SCU](https://github.com/neolee/SCU): Squirrel Configuration Utilities
 
 Credits
@@ -127,3 +136,5 @@ Contributors
   - [jakwings](https://github.com/jakwings)
   - [Prcuvu](https://github.com/Prcuvu)
   - [hchunhui](https://github.com/hchunhui)
+  - [Qijia Liu](https://github.com/eagleoflqj)
+  - [WhiredPlanck](https://github.com/WhiredPlanck)

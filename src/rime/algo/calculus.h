@@ -18,7 +18,7 @@ namespace rime {
 
 class Calculation {
  public:
-  using Factory = Calculation* (const vector<string>& args);
+  using Factory = Calculation*(const vector<string>& args);
 
   Calculation() = default;
   virtual ~Calculation() = default;
@@ -29,9 +29,9 @@ class Calculation {
 
 class Calculus {
  public:
-  RIME_API Calculus();
+  RIME_DLL Calculus();
   void Register(const string& token, Calculation::Factory* factory);
-  RIME_API Calculation* Parse(const string& defintion);
+  RIME_DLL Calculation* Parse(const string& definition);
 
  private:
   map<string, Calculation::Factory*> factories_;
